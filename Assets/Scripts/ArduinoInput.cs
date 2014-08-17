@@ -1,70 +1,61 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.IO.Ports;
+using Uniduino;
 
 public class ArduinoInput : MonoBehaviour {
-	SerialPort stream= new SerialPort("COM4", 9600);
+	//SerialPort stream = new SerialPort("COM5", 9600);
+	public Arduino arduino;
+
+	public int pin = 0;
+	float max = 0f;
+	float min = 1000f;
+	int breathValue = 0;
 	string distance;
-	public BodyMovement bodyParticles;
-	
-
-
-
+	public DisplayColor bodyParticles;
 
 	// Use this for initialization
 	void Start () {
-		try{
-			stream.Open();
-			stream.DataReceived += DataReceivedHandler;
-			stream.ErrorReceived += DataErrorReceivedHandler;
-//			StartCoroutine (StreamData());
-//			Debug.Log(stream.DataReceived += DataReceivedHandler);
-		}
-		catch(System.Exception e){
-			Debug.Log("Could not open serial port: " + e.Message);
-			
-		}
+		print ("Is this running?");
+		arduino = Arduino.global;
+		arduino.Setup (ConfigurePins);
 		
-	}
-	IEnumerator StreamData()
-	{
-		while(true)
-		{
-			yield return new WaitForSeconds(0.25f);
-			Debug.Log (stream.ReadLine ().ToString ());
-	
-		}
 	}
 	void Update()
 	{
-		string currentBreathData = stream.ReadLine ();
-		float value = float.Parse (currentBreathData);
-		if(value > 200.0f){
+		//		string currentBreathData = stream.ReadLine ();
+		//		stream.ReadTimeout = 55;
+		Debug.Log ("Its running");
+		breathValue = arduino.analogRead (pin);
+		//		if(breathValue > max)
+		//		{
+		//			max = value;
+		//		}
+		//		if(breathValue < min)
+		//		{
+		//			min = value;
+		//		}
+		float normalizedValue = breathValue/(max - min);
+		Debug.Log (breathValue);
+		if(breathValue > 400f){
 			bodyParticles.PushBody();
 		}
-		else if (value > 100.0f && value < 200.0f){
+		else{
 			bodyParticles.PullBody();
 		}
-		else {
-			bodyParticles.StopBody();
-		}
-
-
+		//		else {
+		//			bodyParticles.StopBody();
+		//		}
+		
+		
 		//Debug.Log (stream.ReadLine ().ToString ());
 	}
+	void ConfigurePins()
+	{
+		arduino.pinMode (0, PinMode.ANALOG);
+		arduino.reportAnalog (0,1);
+	}
 
-	private void DataReceivedHandler(
-		object sender,
-		SerialDataReceivedEventArgs e)
-	{
-		Debug.Log("WHAT THE FUCK?");
-		SerialPort sp = (SerialPort)sender;
-		string distance = sp.ReadLine();
-		Debug.Log(distance);
-	}
-	private void DataErrorReceivedHandler(object sender, 
-	                                      SerialErrorReceivedEventArgs e)
-	{
-		Debug.Log("Serial port error:" + e.EventType.ToString ("G"));            
-	}
+
+
 }

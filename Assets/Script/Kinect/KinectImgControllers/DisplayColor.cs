@@ -97,14 +97,15 @@ public class DisplayColor : MonoBehaviour {
 		//	pixelColor.a = 255;
 		}
 	}
-	private void PushBody()
+	public void PushBody()
 	{
 		for(int i = 0; i < length; i ++)
 		{
 			for(int x = 0; x < width; x++)
 			{
 				Vector3 pushDirection = (thePixels[i,x].transform.position - middlePoint).normalized;
-				if((thePixels[i,x].transform.position - originalPositions[i,x].transform.position).magnitude < 5.0f){
+				pushDirection = pushDirection * 3;
+				if((thePixels[i,x].transform.position - originalPositions[i,x].transform.position).magnitude < 20.0f){
 					thePixels[i, x].rigidbody.AddForce (pushDirection);
 				}
 				else{
@@ -114,13 +115,14 @@ public class DisplayColor : MonoBehaviour {
 		}
 	}
 
-	private void PullBody()
+	public void PullBody()
 	{
 		for(int i = 0; i < length; i++)
 		{
 			for(int x = 0; x < width; x++)
 			{
 				Vector3 pullDirection = (middlePoint - thePixels[i,x].transform.position).normalized;
+				pullDirection = pullDirection * 2.5f;
 				if((thePixels[i,x].transform.position - originalPositions[i,x].transform.position).magnitude > 0.1f)
 				{
 					thePixels[i,x].rigidbody.AddForce (pullDirection);
@@ -129,6 +131,16 @@ public class DisplayColor : MonoBehaviour {
 				{
 					thePixels[i,x].rigidbody.velocity = Vector3.zero;
 				}
+			}
+		}
+	}
+	public void StopBody()
+	{
+		for(int i = 0; i < length; i++)
+		{
+			for(int x = 0; x < width; x++)
+			{
+				thePixels[i,x].rigidbody.velocity = Vector3.zero;
 			}
 		}
 	}
