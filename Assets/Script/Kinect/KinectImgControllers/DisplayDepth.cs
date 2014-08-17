@@ -48,7 +48,7 @@ public class DisplayDepth : MonoBehaviour {
 				int BLidx = (xx * 4) + (yy * 4 + 1) * width;
 				int BRidx = (xx * 4 + 1) + (yy * 4 + 1) * width;
 				int temp = xx + (yy * newWidth);
-				newDepthBuf[temp] = (short)((depthBuf[TLidx] + depthBuf[TRidx] + depthBuf[BLidx] + depthBuf[BRidx])/4);
+				newDepthBuf[temp] = (short) depthBuf[TLidx]; //((depthBuf[TLidx] + depthBuf[TRidx] + depthBuf[BLidx] + depthBuf[BRidx])/4);
 
 				img[temp].r = (byte)(newDepthBuf[temp] / 32);
 				img[temp].g = (byte)(newDepthBuf[temp] / 32);
@@ -66,7 +66,7 @@ public class DisplayDepth : MonoBehaviour {
 				}
 
 				if(newDepthBuf[temp] == 0){
-					theColor.SetRendererOff (xx, yy);
+				//	theColor.SetRendererOff (xx, yy);
 				}
 				else
 				{
@@ -82,7 +82,27 @@ public class DisplayDepth : MonoBehaviour {
 
 		return img;
 	}
-	
+//	private Color32[] convertDepthToColor(short[] depthBuf)
+//	{
+//		int numPixelsOn = 76800;
+//		Color32[] img = new Color32[depthBuf.Length];
+//		for (int pix = 0; pix < depthBuf.Length; pix++)
+//		{
+//			img[pix].r = (byte)(depthBuf[pix] / 32);
+//			img[pix].g = (byte)(depthBuf[pix] / 32);
+//			img[pix].b = (byte)(depthBuf[pix] / 32);
+//			if(depthBuf[pix] < 25)
+//			{
+//				theColor.SetRendererOff (pix/320, pix%240);
+//				numPixelsOn--;
+//			}
+//			Debug.Log ("DIS HOW MANY PIXELZ" + numPixelsOn);
+//		}
+//
+//		return img;
+//	}
+
+
 	private Color32[] convertPlayersToCutout(bool[,] players)
 	{
 //		Color32[] img = new Color32[320*240];
