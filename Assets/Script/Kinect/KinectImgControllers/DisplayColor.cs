@@ -19,6 +19,7 @@ public class DisplayColor : MonoBehaviour {
 	private GameObject[,] originalPositions;
 	private Vector3 middlePoint;
 	public int pointCloudMultiplier;
+	private float PointCloudSlowDistance;
 	
 	// Use this for initialization
 
@@ -48,6 +49,7 @@ public class DisplayColor : MonoBehaviour {
 //	}
 
 	void Start () {
+		PointCloudSlowDistance = 6.0f;
 		kinect = devOrEmu.getKinect();
 	//	tex = new Texture2D(640,480,TextureFormat.ARGB32,false);
 		tex = new Texture2D(80,60,TextureFormat.ARGB32,false);
@@ -67,6 +69,7 @@ public class DisplayColor : MonoBehaviour {
 				originalPositions[i,x] = (GameObject)GameObject.Instantiate (positionHolder, new Vector3((float)-i/4, (float)-x/4, 0), Quaternion.identity);
 				thePixels[i,x].transform.parent = PointCloudParent.transform;
 				originalPositions[i,x].transform.parent = PointCloudParent.transform;
+				thePixels[i,x].renderer.material.color = Color.white;
 
 				if(x == width/2 && i == length/2)
 				{
@@ -85,13 +88,13 @@ public class DisplayColor : MonoBehaviour {
 		{
 
 			//tex.SetPixels32(kinect.getColor());
-			tex.SetPixels32(mipmapImg(kinect.getColor(),640,480));
+			//tex.SetPixels32(mipmapImg(kinect.getColor(),640,480));
 
 //			mipmapImg (kinect.getColor(), 640, 480);
 			//tex.SetPixels32 (mipmapImg (kinect.getColor(), 320, 240));
 //			tex.SetPixels32 (mipmapImg (kinect.getColor (), 320, 240));
 //			tex.SetPixels32 (mipmapImg (kinect.getColor (), 80, 60));
-			tex.Apply(false);
+		//	tex.Apply(false);
 			if(Input.GetKey (KeyCode.I))
 			{
 				PushBody();
@@ -113,7 +116,7 @@ public class DisplayColor : MonoBehaviour {
 			{
 				Vector3 pushDirection = (thePixels[i,x].transform.position - middlePoint).normalized;
 				pushDirection = pushDirection * 3;
-				if((thePixels[i,x].transform.position - originalPositions[i,x].transform.position).magnitude < 20.0f){
+				if(((thePixels[i,x].transform.position - originalPositions[i,x].transform.position).magnitude < 50.0f) && thePixels[i,x].rigidbody.velocity.magnitude <= 4.0f){
 					thePixels[i, x].rigidbody.AddForce (pushDirection);
 				}
 				else{
@@ -129,16 +132,22 @@ public class DisplayColor : MonoBehaviour {
 		{
 			for(int x = 0; x < width; x++)
 			{
-				Vector3 pullDirection = (middlePoint - thePixels[i,x].transform.position).normalized;
+				Vector3 pullDirection = (originalPositions[i,x].transform.position - thePixels[i,x].transform.position).normalized;
 				pullDirection = pullDirection * 2.5f;
-				if((thePixels[i,x].transform.position - originalPositions[i,x].transform.position).magnitude > 0.1f)
-				{
-					thePixels[i,x].rigidbody.AddForce (pullDirection);
-				}
-				else
+				if((thePixels[i,x].transform.position - originalPositions[i,x].transform.position).magnitude < 0.1f)
 				{
 					thePixels[i,x].rigidbody.velocity = Vector3.zero;
 				}
+				else if((thePixels[i,x].transform.position - originalPositions[i,x].transform.position).magnitude < PointCloudSlowDistance && thePixels[i,x].rigidbody.velocity.magnitude > 2.0f)
+				{
+					//Debug.Log ("Must not be enough");
+					thePixels[i,x].rigidbody.AddForce (-pullDirection * 2.5f);
+				}
+				else if(thePixels[i,x].rigidbody.velocity.magnitude <= 4.0f)
+				{
+					thePixels[i,x].rigidbody.AddForce (pullDirection);
+				}
+
 			}
 		}
 	}
@@ -169,15 +178,13 @@ public class DisplayColor : MonoBehaviour {
 				int BRidx = (xx * 8 + 1) + (yy * 8 + 1) * width;
 
 
-
 //				int TLidx = (xx * 2) + yy * 2 * width;
 //				int TRidx = (xx * 2 + 1) + yy * width * 2;
 //				int BLidx = (xx * 2) + (yy * 2 + 1) * width;
 //				int BRidx = (xx * 2 + 1) + (yy * 2 + 1) * width;
-				dst[xx + yy * newWidth] = Color32.Lerp(Color32.Lerp(src[BLidx],src[BRidx],.5f),
-				                                       Color32.Lerp(src[TLidx],src[TRidx],.5F),.5F);
-				thePixels[xx, yy].renderer.material.color = dst[xx + yy * newWidth];
-
+				//dst[xx + yy * newWidth] = Color32.Lerp(Color32.Lerp(src[BLidx],src[BRidx],.5f),
+				//                                       Color32.Lerp(src[TLidx],src[TRidx],.5F),.5F);
+			//	thePixels[xx, yy].renderer.material.color = dst[xx + yy * newWidth];
 
 		//		thePixels[xx,yy].renderer.material.color = Color32.Lerp (Color32.Lerp (src[BLidx],src[BRidx],.5F),
 		//		                                                         Color32.Lerp(src[TLidx],src[TRidx],.5F),.5F);
@@ -242,6 +249,9 @@ public class DisplayColor : MonoBehaviour {
 	{
 		float newDepthValue = (depthValue * pointCloudMultiplier);
 	//	Debug.Log (newDepthValue);
-		thePixels[x,y].transform.position = new Vector3(thePixels[x,y].transform.position.x, thePixels[x,y].transform.position.y, -newDepthValue);
+		Vector3 newPositionPixel = new Vector3(thePixels[x,y].transform.position.x, thePixels[x,y].transform.position.y, -newDepthValue);
+		Vector3 newPositionOriginal = new Vector3(originalPositions[x,y].transform.position.x, originalPositions[x,y].transform.position.y, -newDepthValue);
+		originalPositions[x,y].transform.position = newPositionOriginal;
+		thePixels[x,y].transform.position = newPositionPixel;
 	}
 }

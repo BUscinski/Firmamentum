@@ -9,7 +9,6 @@ public class Breathing : MonoBehaviour {
 	public int pin = 0;
 	public int pinValue;
 	private int previousPinValue;
-	public float spinSpeed = 0.2f;
 	public DisplayColor thePointCloud;
 	private bool lockPush;
 	
@@ -31,7 +30,11 @@ public class Breathing : MonoBehaviour {
 	
 	void Update () 
 	{       
+		if(Input.GetKeyDown (KeyCode.Escape)){
+			Application.Quit ();
+		}
 		pinValue = arduino.analogRead(pin);
+		Debug.Log (pinValue);
 		if(pinValue > previousPinValue)
 		{
 			thePointCloud.PushBody ();

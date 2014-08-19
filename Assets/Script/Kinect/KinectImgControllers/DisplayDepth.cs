@@ -65,15 +65,15 @@ public class DisplayDepth : MonoBehaviour {
 					}
 				}
 
-				if(newDepthBuf[temp] == 0){
-				//	theColor.SetRendererOff (xx, yy);
+				if((newDepthBuf[temp] <=  50 || newDepthBuf[temp] >= 2400)){
+					theColor.SetRendererOff (xx, 59-yy);
 				}
 				else
 				{
-					theColor.SetRendererOn (xx, yy);
+					theColor.SetRendererOn (xx, 59-yy);
 				}
 				float DepthValue = (float)newDepthBuf[temp]/(max - min);
-				theColor.SetDepth (xx, yy, DepthValue);
+				theColor.SetDepth (xx, 59-yy, DepthValue);
 
 			}
 		}
