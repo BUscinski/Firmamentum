@@ -17,7 +17,7 @@ public class Breathing : MonoBehaviour {
 	void Start( )
 	{
 		lockPush = false;
-		//arduino = Arduino.global;
+	//	arduino = Arduino.global;
 		arduino.Setup(ConfigurePins);
 		previousPinValue = 0;
 	}

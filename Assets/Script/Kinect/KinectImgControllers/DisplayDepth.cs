@@ -64,8 +64,10 @@ public class DisplayDepth : MonoBehaviour {
 						min = newDepthBuf[temp];
 					}
 				}
+//				theColor.SetRenderer(xx, 59-yy);
 
-				if((newDepthBuf[temp] <=  50 || newDepthBuf[temp] >= 2400)){
+
+				if((newDepthBuf[temp] <=  1000 || newDepthBuf[temp] >= 2400)){
 					theColor.SetRendererOff (xx, 59-yy);
 				}
 				else

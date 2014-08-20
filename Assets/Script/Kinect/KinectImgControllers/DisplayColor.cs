@@ -17,7 +17,7 @@ public class DisplayColor : MonoBehaviour {
 	public GameObject positionHolder;
 	private GameObject[,] thePixels;
 	private GameObject[,] originalPositions;
-	private Vector3 middlePoint;
+	public Transform middlePoint;
 	public int pointCloudMultiplier;
 	private float PointCloudSlowDistance;
 	
@@ -60,7 +60,8 @@ public class DisplayColor : MonoBehaviour {
 		originalPositions = new GameObject[length, width];
 		numPixels = length * width;
 		Debug.Log ("NumPixels: " + numPixels);
-
+		//int middlePointx = 0;
+		//int middlePointy = 0;
 		for(int i = 0; i < length; i++)
 		{
 			for(int x = 0; x < width; x++)
@@ -71,15 +72,16 @@ public class DisplayColor : MonoBehaviour {
 				originalPositions[i,x].transform.parent = PointCloudParent.transform;
 				thePixels[i,x].renderer.material.color = Color.white;
 
-				if(x == width/2 && i == length/2)
-				{
-					middlePoint = thePixels[i,x].transform.position;
-//					middlePoint.transform.position.x += 0.25f;
-				}
+		//		if(x == width/2 && i == length/2)
+		//		{
+		//			middlePointx = x;
+		//			middlePointy = i;
+		//		}
 				//Add Particle System?
 			}
 		}
 		PointCloudParent.transform.Rotate (new Vector3(0,0,270));
+		//middlePoint = thePixels[middlePointx, middlePointy].transform.position;
 	}
 	
 	// Update is called once per frame
@@ -114,7 +116,7 @@ public class DisplayColor : MonoBehaviour {
 		{
 			for(int x = 0; x < width; x++)
 			{
-				Vector3 pushDirection = (thePixels[i,x].transform.position - middlePoint).normalized;
+				Vector3 pushDirection = (thePixels[i,x].transform.position - middlePoint.position).normalized;
 				pushDirection = pushDirection * 3;
 				if(((thePixels[i,x].transform.position - originalPositions[i,x].transform.position).magnitude < 50.0f) && thePixels[i,x].rigidbody.velocity.magnitude <= 4.0f){
 					thePixels[i, x].rigidbody.AddForce (pushDirection);
@@ -133,19 +135,16 @@ public class DisplayColor : MonoBehaviour {
 			for(int x = 0; x < width; x++)
 			{
 				Vector3 pullDirection = (originalPositions[i,x].transform.position - thePixels[i,x].transform.position).normalized;
-				pullDirection = pullDirection * 2.5f;
+			//	pullDirection = pullDirection * 2.5f;
+	//			pullDirection = pullDirection 
 				if((thePixels[i,x].transform.position - originalPositions[i,x].transform.position).magnitude < 0.1f)
 				{
 					thePixels[i,x].rigidbody.velocity = Vector3.zero;
 				}
-				else if((thePixels[i,x].transform.position - originalPositions[i,x].transform.position).magnitude < PointCloudSlowDistance && thePixels[i,x].rigidbody.velocity.magnitude > 2.0f)
+				else //if(thePixels[i,x].rigidbody.velocity.magnitude <= 4.0f)
 				{
-					//Debug.Log ("Must not be enough");
-					thePixels[i,x].rigidbody.AddForce (-pullDirection * 2.5f);
-				}
-				else if(thePixels[i,x].rigidbody.velocity.magnitude <= 4.0f)
-				{
-					thePixels[i,x].rigidbody.AddForce (pullDirection);
+					thePixels[i,x].rigidbody.AddForce (pullDirection * 2.5f);
+					thePixels[i,x].rigidbody.velocity = Vector3.ClampMagnitude(thePixels[i,x].rigidbody.velocity, (thePixels[i,x].transform.position - originalPositions[i,x].transform.position).magnitude);
 				}
 
 			}
@@ -253,5 +252,16 @@ public class DisplayColor : MonoBehaviour {
 		Vector3 newPositionOriginal = new Vector3(originalPositions[x,y].transform.position.x, originalPositions[x,y].transform.position.y, -newDepthValue);
 		originalPositions[x,y].transform.position = newPositionOriginal;
 		thePixels[x,y].transform.position = newPositionPixel;
+	}
+	public void SetRenderer(int x, int y)
+	{
+		if((originalPositions[x, y].transform.position - middlePoint.transform.position).magnitude < 8.0f)
+		{
+			thePixels[x,y].renderer.enabled = true;
+		}
+		else
+		{
+			thePixels[x,y].renderer.enabled = false;
+		}
 	}
 }
