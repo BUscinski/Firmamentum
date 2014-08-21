@@ -6,12 +6,15 @@ public class Breathing : MonoBehaviour {
 	
 	public Arduino arduino;
 	
+
+	private float MovementValue;
+	private int tempMovementValue;
 	public int pin = 0;
 	public int pinValue;
 	private int previousPinValue;
 	public DisplayColor thePointCloud;
 	private bool lockPush;
-	
+	private int iterator;
 	private GameObject cube;
 	
 	void Start( )
@@ -20,6 +23,7 @@ public class Breathing : MonoBehaviour {
 	//	arduino = Arduino.global;
 		arduino.Setup(ConfigurePins);
 		previousPinValue = 0;
+		iterator = 0;
 	}
 	
 	void ConfigurePins( )
@@ -30,11 +34,14 @@ public class Breathing : MonoBehaviour {
 	
 	void Update () 
 	{       
+		if(iterator == 0)
+		{
+			tempMovementValue = 0;
+		}
 		if(Input.GetKeyDown (KeyCode.Escape)){
 			Application.Quit ();
 		}
 		pinValue = arduino.analogRead(pin);
-		Debug.Log (pinValue);
 		if(pinValue > previousPinValue)
 		{
 			thePointCloud.PushBody ();
@@ -43,7 +50,21 @@ public class Breathing : MonoBehaviour {
 		{
 			thePointCloud.PullBody ();
 		}
+	//	Debug.Log ("Pin value: " + pinValue);
+
+		tempMovementValue += pinValue - previousPinValue;
+		iterator++;
+		if(iterator == 5)
+		{
+			MovementValue = tempMovementValue/iterator;
+			Debug.Log ("Updating Movement value to: " + tempMovementValue);
+			iterator = 0;
+		}
 		previousPinValue = pinValue;
+	}
+	public float GetMovementValue()
+	{
+		return MovementValue;
 	}
 //	IEnumerator LockPush()
 //	{

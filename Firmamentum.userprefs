@@ -1,12 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\Kinect\KinectImgControllers\DisplayDepth.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\ChangeFoV.cs">
     <Files>
-      <File FileName="Assets\Script\Kinect\KinectImgControllers\DisplayColor.cs" Line="236" Column="3" />
-      <File FileName="Assets\Script\Kinect\KinectImgControllers\DisplayColor.cs" Line="266" Column="1" />
-      <File FileName="Assets\Scripts\Breathing.cs" Line="46" Column="6" />
-      <File FileName="Assets\Scripts\CameraMovement.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\Kinect\KinectImgControllers\DisplayDepth.cs" Line="70" Column="33" />
+      <File FileName="Assets\ChangeFoV.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Breathing.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\Kinect\KinectImgControllers\DisplayColor.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CameraMovement.cs" Line="45" Column="16" />
+      <File FileName="Assets\Script\Kinect\KinectImgControllers\DisplayDepth.cs" Line="1" Column="1" />
+      <File FileName="Assets\ChangeFoV.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

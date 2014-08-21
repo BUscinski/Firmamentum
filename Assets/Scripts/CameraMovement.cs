@@ -12,7 +12,7 @@ public class CameraMovement : MonoBehaviour {
 	int iterator = 0;
 	public float maxDistanceDelta = 10f;
 	public float switchDistance = 10f;
-	public float speed = 0.05f;
+	public float speed;
 	public Transform lookTarget;
 	public Transform lookTargetTwo;
 	private bool moving;
@@ -31,6 +31,18 @@ public class CameraMovement : MonoBehaviour {
 				moving = true;
 				if(iterator <= 15){
 					Orientation.transform.rotation = Quaternion.Lerp (Orientation.transform.rotation, Quaternion.LookRotation (lookTarget.position - Orientation.transform.position), Time.deltaTime * 3);
+				}
+				if(iterator == 20)
+				{
+					Orientation.transform.rotation = Quaternion.Lerp (Orientation.transform.rotation, Quaternion.LookRotation (lookTarget.position - Orientation.transform.position), Time.deltaTime * 3);
+				}
+				if(iterator > 5 && iterator < 17)
+				{
+					speed = 50;
+				}
+				else
+				{
+					speed = 5;
 				}
 				transform.position = Vector3.MoveTowards(transform.position, Waypoints[iterator].transform.position, Time.deltaTime * speed);
 				if((gameObject.transform.position - Waypoints[iterator].transform.position).magnitude <= switchDistance)
