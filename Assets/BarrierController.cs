@@ -4,20 +4,33 @@ using System.Collections;
 public class BarrierController : MonoBehaviour {
 	private bool finalPointDone = false;
 	public GameObject Alcove;
+	public GameObject Mirror;
 	private int braneHits;
-	private Renderer darkPlane;
+	public Renderer darkPlane;
+	public GameObject allBranes;
+	private Renderer[] Branes;
+
 	// Use this for initialization
 	void Start () {
-		darkPlane = gameObject.GetComponentInChildren<Renderer>();
 		darkPlane.enabled = false;
+		Branes = allBranes.GetComponentsInChildren<Renderer>();
+		for(int i = 0; i < Branes.Length; i++)
+		{
+			Branes[i].renderer.enabled = false;
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if(finalPointDone == true)
 		{
+			for(int i = 0; i < Branes.Length; i++)
+			{
+				Branes[i].renderer.enabled = false;
+			}
 			GetComponent<BoxCollider>().enabled = false;
 			Alcove.SetActive (true);
+			Mirror.renderer.enabled = true;
 			DisableBarrier ();
 		}
 	}
@@ -27,11 +40,16 @@ public class BarrierController : MonoBehaviour {
 		{
 			EnableBarrier ();
 			Alcove.SetActive (false);
+			Mirror.renderer.enabled = false;
 		}
 		if(col.name == "Brane")
 		{
 			if(braneHits == 0){
 				Debug.Log ("Entering Brane");
+				for(int i = 0; i < Branes.Length; i++)
+				{
+					Branes[i].renderer.enabled = true;
+				}
 				DisableBarrier ();
 				braneHits++;
 			}

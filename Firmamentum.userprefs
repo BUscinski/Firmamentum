@@ -1,13 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\ChangeFoV.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\BarrierController.cs">
     <Files>
-      <File FileName="Assets\ChangeFoV.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Breathing.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Breathing.cs" Line="60" Column="3" />
+      <File FileName="Assets\ChangeFoV.cs" Line="27" Column="4" />
       <File FileName="Assets\Script\Kinect\KinectImgControllers\DisplayColor.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CameraMovement.cs" Line="45" Column="16" />
+      <File FileName="Assets\Scripts\CameraMovement.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\Kinect\KinectImgControllers\DisplayDepth.cs" Line="1" Column="1" />
-      <File FileName="Assets\ChangeFoV.cs" Line="1" Column="1" />
+      <File FileName="Assets\BarrierController.cs" Line="11" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

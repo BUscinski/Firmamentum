@@ -52,12 +52,12 @@ public class Breathing : MonoBehaviour {
 		}
 	//	Debug.Log ("Pin value: " + pinValue);
 
-		tempMovementValue += pinValue - previousPinValue;
+		tempMovementValue += pinValue;
 		iterator++;
 		if(iterator == 5)
 		{
 			MovementValue = tempMovementValue/iterator;
-			Debug.Log ("Updating Movement value to: " + tempMovementValue);
+//			Debug.Log ("Updating Movement value to: " + tempMovementValue);
 			iterator = 0;
 		}
 		previousPinValue = pinValue;
