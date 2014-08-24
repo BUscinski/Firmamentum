@@ -9,11 +9,16 @@ public class BarrierController : MonoBehaviour {
 	public Renderer darkPlane;
 	public GameObject allBranes;
 	private Renderer[] Branes;
+	public GameObject finalEntry;
+	public DisplayColor kinectPointCloud;
+	public GameObject thePointCloud;
+
 
 	// Use this for initialization
 	void Start () {
 		darkPlane.enabled = false;
 		Branes = allBranes.GetComponentsInChildren<Renderer>();
+		finalEntry.SetActive (false);
 		for(int i = 0; i < Branes.Length; i++)
 		{
 			Branes[i].renderer.enabled = false;
@@ -32,6 +37,8 @@ public class BarrierController : MonoBehaviour {
 			Alcove.SetActive (true);
 			Mirror.renderer.enabled = true;
 			DisableBarrier ();
+			thePointCloud.SetActive (true);
+			finalPointDone = false;
 		}
 	}
 	void OnTriggerEnter(Collider col){
@@ -41,6 +48,8 @@ public class BarrierController : MonoBehaviour {
 			EnableBarrier ();
 			Alcove.SetActive (false);
 			Mirror.renderer.enabled = false;
+			kinectPointCloud.DisableAllRenderers();
+			StartCoroutine (ExpandBody());
 		}
 		if(col.name == "Brane")
 		{
@@ -51,15 +60,21 @@ public class BarrierController : MonoBehaviour {
 					Branes[i].renderer.enabled = true;
 				}
 				DisableBarrier ();
+				finalEntry.SetActive (true);
 				braneHits++;
 			}
-			else if (braneHits >= 1)
-			{
-				Debug.Log ("Its getting here");
-				EnableBarrier ();
-			}
-		}
 
+		}
+		if(col.name == finalEntry.name)
+		{
+			Debug.Log ("ENTERING FINAL ENTRY POINT");
+			for(int i = 0; i < Branes.Length; i++)
+			{
+				Branes[i].renderer.enabled = false;
+			}
+			EnableBarrier ();
+
+		}
 	}
 	public void SetFinalPointBool(bool value)
 	{
@@ -74,6 +89,18 @@ public class BarrierController : MonoBehaviour {
 	{
 		renderer.enabled = false;
 		darkPlane.enabled = false;
+	}
+	private IEnumerator ExpandBody()
+	{
+		float timeToExpand = 0.0f;
+		while(timeToExpand < 5.0f)
+		{
+			yield return null;
+			timeToExpand += Time.deltaTime;
+			kinectPointCloud.PushBody ();
+		}
+		thePointCloud.SetActive (false);
+
 	}
 	
 }

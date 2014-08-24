@@ -2,24 +2,28 @@ using UnityEngine;
 using System.Collections;
 
 public class CameraMovement : MonoBehaviour {
-	public GameObject[] Waypoints;
+	public Transform[] Waypoints;
+	public Transform[] initialWaypoints; // 5-12
+	public Transform[] waypointsAfterWaiting; // 12 - 21
 	public GameObject Orientation;
 	public float WaitTime;
 	private bool Wait;
 	private bool pausing = false;
 	public BarrierController theBarrier;
 //	private bool[] CompletedWaypoints;
-	int iterator = 0;
-	public float maxDistanceDelta = 10f;
-	public float switchDistance = 10f;
+	public int iterator = 0;
+	public float maxDistanceDelta;
+	public float switchDistance;
 	public float speed;
 	public Transform lookTarget;
-	public Transform lookTargetTwo;
 	private bool moving;
+	private bool tweening;
+
 	// Use this for initialization
 	void Start () 
 	{
 		moving = false;
+		tweening = false;
 		//		CompletedWaypoints = new bool[Waypoints.Length];
 	}
 	
@@ -28,6 +32,7 @@ public class CameraMovement : MonoBehaviour {
 		if(Input.GetKeyDown (KeyCode.Space) || moving == true){
 			if(iterator < Waypoints.Length)
 			{
+				Debug.Log ("Iterator " + iterator);
 				moving = true;
 				if(iterator <= 15){
 					Orientation.transform.rotation = Quaternion.Lerp (Orientation.transform.rotation, Quaternion.LookRotation (lookTarget.position - Orientation.transform.position), Time.deltaTime * 3);
@@ -36,15 +41,26 @@ public class CameraMovement : MonoBehaviour {
 				{
 					Orientation.transform.rotation = Quaternion.Lerp (Orientation.transform.rotation, Quaternion.LookRotation (lookTarget.position - Orientation.transform.position), Time.deltaTime * 3);
 				}
-				if(iterator > 5 && iterator < 17)
+				if(iterator == 5 && tweening == false)// && iterator != 12)
 				{
-					speed = 50;
+					//transform.position = Vector3.MoveTowards(transform.position, Waypoints[iterator].transform.position, Time.deltaTime * speed);
+					//iTween.MoveTo (gameObject, iTween.Hash ("position", Waypoints[iterator].transform, "time", 5.0f, "easetype", iTween.EaseType.easeInOutQuart)); 
+					tweening = true;
+					iTween.MoveTo (gameObject, iTween.Hash ("path", initialWaypoints, "time", 60f, "easeType", iTween.EaseType.easeOutSine, "looptype", iTween.LoopType.none, "delay", 5.0f));
 				}
-				else
+				if(iterator == 6)
 				{
-					speed = 5;
+					tweening = false;
 				}
-				transform.position = Vector3.MoveTowards(transform.position, Waypoints[iterator].transform.position, Time.deltaTime * speed);
+				if(iterator == 12 && tweening == false)
+				{
+					tweening = true;
+					iTween.MoveTo (gameObject, iTween.Hash ("path", waypointsAfterWaiting, "time", 60f, "easeType", iTween.EaseType.easeInOutSine, "loopType", iTween.LoopType.none, "delay", 5.0f));
+				}
+				else if (iterator < 5)
+				{
+					transform.position = Vector3.Lerp (transform.position, Waypoints[iterator].transform.position, Time.deltaTime * 0.4f);
+				}
 				if((gameObject.transform.position - Waypoints[iterator].transform.position).magnitude <= switchDistance)
 				{
 					if(iterator == 2 && Wait == false)

@@ -264,4 +264,25 @@ public class DisplayColor : MonoBehaviour {
 			thePixels[x,y].renderer.enabled = false;
 		}
 	}
+	public void DisableAllRenderers()
+	{
+		for(int i = 0; i < 80; i++)
+		{
+			for(int x = 0; x < 60; x++)
+			{
+				thePixels[i,x].renderer.enabled = false;
+			}
+		}
+	}
+	public void EnableAllRenderers()
+	{
+		for(int i = 0; i < 80; i ++)
+		{
+			for(int x = 0; x < 60; x++)
+			{
+				thePixels[i,x].renderer.enabled = true;
+			}
+		}
+	}
+
 }
