@@ -46,10 +46,6 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\AlterNoiseShader.cs" />
-     <Compile Include="Assets\BarrierController.cs" />
-     <Compile Include="Assets\CameraSway.cs" />
-     <Compile Include="Assets\ChangeFoV.cs" />
      <Compile Include="Assets\MirrorReflection\MirrorReflection.cs" />
      <Compile Include="Assets\OVR\OVRImageEffects\OVRImageEffectBase.cs" />
      <Compile Include="Assets\OVR\OVRImageEffects\OVRLensCorrection.cs" />
@@ -107,15 +103,22 @@
      <Compile Include="Assets\Script\Kinect\KinectWrapper\KinectRecorder.cs" />
      <Compile Include="Assets\Script\Kinect\KinectWrapper\KinectSensor.cs" />
      <Compile Include="Assets\Script\Kinect\KinectWrapper\SkeletonWrapper.cs" />
+     <Compile Include="Assets\Scripts\AlterNoiseShader.cs" />
      <Compile Include="Assets\Scripts\ArduinoInput.cs" />
      <Compile Include="Assets\Scripts\AttachTentacles.cs" />
+     <Compile Include="Assets\Scripts\BarrierBreathing.cs" />
+     <Compile Include="Assets\Scripts\BarrierController.cs" />
+     <Compile Include="Assets\Scripts\BloomBreathing.cs" />
      <Compile Include="Assets\Scripts\BodyMovement.cs" />
      <Compile Include="Assets\Scripts\Breathing.cs" />
      <Compile Include="Assets\Scripts\CameraMovement.cs" />
+     <Compile Include="Assets\Scripts\CameraSway.cs" />
+     <Compile Include="Assets\Scripts\ChangeFoV.cs" />
      <Compile Include="Assets\Scripts\CreateParticles.cs" />
      <Compile Include="Assets\Scripts\GenerateMesh.cs" />
      <Compile Include="Assets\Scripts\MoveTentacles.cs" />
      <Compile Include="Assets\Scripts\PointCloud.cs" />
+     <Compile Include="Assets\Scripts\SpotlightIntensity.cs" />
      <Compile Include="Assets\Scripts\WindowMod.cs" />
      <Compile Include="Assets\Uniduino\Scripts\Arduino.Firmata.cs" />
      <Compile Include="Assets\Uniduino\Scripts\Arduino.cs" />

@@ -59,7 +59,6 @@ public class DisplayColor : MonoBehaviour {
 		thePixels = new GameObject[length, width];
 		originalPositions = new GameObject[length, width];
 		numPixels = length * width;
-		Debug.Log ("NumPixels: " + numPixels);
 		//int middlePointx = 0;
 		//int middlePointy = 0;
 		for(int i = 0; i < length; i++)
@@ -167,16 +166,16 @@ public class DisplayColor : MonoBehaviour {
 //		int newWidth = 80;
 //		int newHeight = 60;
 		Color32[] dst = new Color32[newWidth * newHeight];
-		for(int yy = 0; yy < newHeight; yy++)
-		{
-			for(int xx = 0; xx < newWidth; xx++)
-			{
-				int TLidx = (xx * 8) + yy * 8 * width;
-				int TRidx = (xx * 8 + 1) + yy * width * 2;
-				int BLidx = (xx * 8) + (yy * 8 + 1) * width;
-				int BRidx = (xx * 8 + 1) + (yy * 8 + 1) * width;
-
-
+//		for(int yy = 0; yy < newHeight; yy++)
+//		{
+//			for(int xx = 0; xx < newWidth; xx++)
+//			{
+//				int TLidx = (xx * 8) + yy * 8 * width;
+//				int TRidx = (xx * 8 + 1) + yy * width * 2;
+//				int BLidx = (xx * 8) + (yy * 8 + 1) * width;
+//				int BRidx = (xx * 8 + 1) + (yy * 8 + 1) * width;
+//
+//
 //				int TLidx = (xx * 2) + yy * 2 * width;
 //				int TRidx = (xx * 2 + 1) + yy * width * 2;
 //				int BLidx = (xx * 2) + (yy * 2 + 1) * width;
@@ -187,8 +186,8 @@ public class DisplayColor : MonoBehaviour {
 
 		//		thePixels[xx,yy].renderer.material.color = Color32.Lerp (Color32.Lerp (src[BLidx],src[BRidx],.5F),
 		//		                                                         Color32.Lerp(src[TLidx],src[TRidx],.5F),.5F);
-			}
-		}
+//			}
+//		}
 		return dst;
 	}
 //	private Color32[] mipmapImg(Color32[] src, int width, int height)

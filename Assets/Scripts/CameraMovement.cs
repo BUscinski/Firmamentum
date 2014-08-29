@@ -18,8 +18,19 @@ public class CameraMovement : MonoBehaviour {
 	public Transform lookTarget;
 	private bool moving;
 	private bool tweening;
+	public Breathing theBreathSensor;
+	public GameObject theUniduino;
+
 
 	// Use this for initialization
+
+	void Awake()
+	{
+		if(GameObject.Find ("Uniduino(Clone)") == null){
+			GameObject.Instantiate (theUniduino);
+		}
+	}
+
 	void Start () 
 	{
 		moving = false;
@@ -29,10 +40,9 @@ public class CameraMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKeyDown (KeyCode.Space) || moving == true){
+		if(Input.GetKeyDown (KeyCode.Space) || theBreathSensor.GetNumBreathsTaken () > 5 || moving == true){
 			if(iterator < Waypoints.Length)
 			{
-				Debug.Log ("Iterator " + iterator);
 				moving = true;
 				if(iterator <= 15){
 					Orientation.transform.rotation = Quaternion.Lerp (Orientation.transform.rotation, Quaternion.LookRotation (lookTarget.position - Orientation.transform.position), Time.deltaTime * 3);
@@ -65,7 +75,6 @@ public class CameraMovement : MonoBehaviour {
 				{
 					if(iterator == 2 && Wait == false)
 					{
-						Debug.Log ("Should be waiting");
 						StartCoroutine (PauseForSeconds());
 					}
 					if(Wait == false)
@@ -80,7 +89,7 @@ public class CameraMovement : MonoBehaviour {
 				{
 				//	theBarrier.SetFinalPointBool (true);
 					theBarrier.EnableBarrier ();
-					Debug.Log ("THIS IS DONE");
+					theBreathSensor.resetNumBreathsTaken();
 			//	iterator = 0;
 				}
 
@@ -88,20 +97,12 @@ public class CameraMovement : MonoBehaviour {
 		else
 		{
 			theBarrier.SetFinalPointBool (true);
+				if(theBreathSensor.GetNumBreathsTaken () >= 7)
+				{
+					Application.LoadLevel ("Alcove Scene");
+				}
 		}
-		//		if(Input.GetKey (KeyCode.Space)){
-//			transform.Rotate(0, 1, 0);
-//		}
-//		if(Input.GetKey (KeyCode.DownArrow))
-//		{	
-//			mainCamera.transform.Translate (0, 0, -1, Space.Self);
-//		}
-//		if(Input.GetKey (KeyCode.UpArrow))
-//		{
-//			mainCamera.transform.Translate(0, 0, 1, Space.Self);
-//		}
-
-	}
+		}
 	}
 	private IEnumerator PauseForSeconds()
 	{
