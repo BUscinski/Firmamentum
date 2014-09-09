@@ -3,9 +3,17 @@ using System.Collections;
 using Uniduino;
 
 public class Breathing : MonoBehaviour {
-	
+	private enum breathStatus
+	{
+		breathingIn,
+		breathingOut
+	}
+
+	private breathStatus currentBreathStatus;
+	private breathStatus previousBreathStatus;
+
 	private Arduino arduino;
-	
+	private bool personThere;
 	public float breathingSpeed;
 	private float MovementValue;
 	private int tempMovementValue;
@@ -15,19 +23,21 @@ public class Breathing : MonoBehaviour {
 	public DisplayColor thePointCloud;
 	private int iterator;
 	private GameObject cube;
-	private bool currentlyBreathingOut;
+	private bool breathSwitcher;
 	private int numBreathsTaken;
+	private int breathingOut;
 	private int breathingIn;
 	private float min;
 	private float max;
 	private bool breathSensorInitialized;
 	void Start( )
 	{
+		personThere = true;
 		breathSensorInitialized = false;
 		min = 5000;
 		max = 0;
 		arduino = GameObject.Find ("Uniduino(Clone)").GetComponent<Arduino>();
-		breathingIn = 0;
+		breathingOut = 0;
 	//	arduino = Arduino.global;
 		arduino.Setup(ConfigurePins);
 		previousPinValue = 0;
@@ -45,7 +55,8 @@ public class Breathing : MonoBehaviour {
 	{       
 		if(breathSensorInitialized)
 		{
-		//	Debug.Log ("Num Breaths Taken" + numBreathsTaken);
+//			Debug.Log ("Num Breaths Taken" + numBreathsTaken);
+			//Debug.Log (pinValue);
 			if(iterator == 0)
 			{
 				tempMovementValue = 0;
@@ -54,28 +65,26 @@ public class Breathing : MonoBehaviour {
 				Application.Quit ();
 			}
 			pinValue = arduino.analogRead(pin);
-		//	if(pinValue > previousPinValue)
+			if(pinValue >=200f)
+			{
+				personThere = true;
+			}
+			//	if(pinValue > previousPinValue)
 			if(MovementValue > ((min + max)/2))
 			{
-				currentlyBreathingOut = true;
-				breathingIn = 0;
+				breathingOut++;
 				thePointCloud.PushBody ();
 			}
 			else
 			{
 				breathingIn++;
-				if(breathingIn >= 10)
-				{
-					currentlyBreathingOut = false;
-					breathingIn = 0;
-				}
 				thePointCloud.PullBody ();
 			}
 		//	Debug.Log ("Pin value: " + pinValue);
 	
 			tempMovementValue += pinValue;
 			iterator++;
-			if(iterator == 5)
+			if(iterator >= 5)
 			{
 				MovementValue = tempMovementValue/iterator;
 //				Debug.Log ("Updating Movement value to: " + tempMovementValue);
@@ -87,12 +96,29 @@ public class Breathing : MonoBehaviour {
 				{
 					min = MovementValue;
 				}
-				if(MovementValue < (min + max)/2 && currentlyBreathingOut == false)
+				iterator = 0;
+
+			}
+			if(breathingIn + breathingOut >= 5)
+			{
+				if(breathingIn > breathingOut)
+				{
+					currentBreathStatus = breathStatus.breathingIn;
+				}
+				if(breathingOut > breathingIn)
+				{
+					currentBreathStatus = breathStatus.breathingOut;
+					//breathingOut
+				}
+				breathingIn = 0;
+				breathingOut = 0;
+				if(currentBreathStatus != previousBreathStatus && currentBreathStatus == breathStatus.breathingIn)
 				{
 					numBreathsTaken++;
 				}
-				iterator = 0;
+				previousBreathStatus = currentBreathStatus;
 			}
+
 			previousPinValue = pinValue;
 		}
 	}
@@ -100,12 +126,7 @@ public class Breathing : MonoBehaviour {
 	{
 		return MovementValue;
 	}
-	private IEnumerator breathOut()
-	{
-		currentlyBreathingOut = true;
-		yield return new WaitForSeconds(1.0f);
-		currentlyBreathingOut = false;
-	}
+
 	public int GetNumBreathsTaken()
 	{
 		return numBreathsTaken;
@@ -116,7 +137,11 @@ public class Breathing : MonoBehaviour {
 	}
 	IEnumerator InitiateBreathSensor()
 	{
-		yield return new WaitForSeconds(10.0f);
+		yield return new WaitForSeconds(5.0f);
 		breathSensorInitialized = true;
+	}
+	public bool getPersonThere()
+	{
+		return personThere;
 	}
 }

@@ -5,18 +5,23 @@ using System.Collections;
 public class DisplayDepth : MonoBehaviour {
 	public DisplayColor theColor;
 	public DepthWrapper dw;
+	private bool someoneStanding;
 	private int max;
 	private int min;
+	private int numObjectsRendered;
 	
 	private Texture2D tex;
 	// Use this for initialization
 	void Start () {
+		numObjectsRendered = 0;
+		someoneStanding = true;
 //		tex = new Texture2D(160,120,TextureFormat.ARGB32,false);
 //		tex = new Texture2D(320,240,TextureFormat.ARGB32, false);
 		tex = new Texture2D(80,60,TextureFormat.ARGB32,false);
 //		renderer.material.mainTexture = tex;
 		min = 1000000;
 		max = 0;
+		dw = GameObject.Find ("KinectPrefab(Clone)").GetComponent<DepthWrapper>();
 	}
 	
 	// Update is called once per frame
@@ -67,19 +72,24 @@ public class DisplayDepth : MonoBehaviour {
 //				theColor.SetRenderer(xx, 59-yy);
 
 
-				if((newDepthBuf[temp] <=  1000 || newDepthBuf[temp] >= 2400)){
+				if((newDepthBuf[temp] <=  500 || newDepthBuf[temp] >= 2400)){
 					theColor.SetRendererOff (xx, 59-yy);
 				}
 				else
 				{
 					theColor.SetRendererOn (xx, 59-yy);
+					numObjectsRendered++;
 				}
 				float DepthValue = (float)newDepthBuf[temp]/(max - min);
 				theColor.SetDepth (xx, 59-yy, DepthValue);
 
 			}
 		}
-
+		if(numObjectsRendered >= 40)
+		{
+			someoneStanding = true;
+		}
+		numObjectsRendered = 0;
 
 
 		return img;
@@ -120,5 +130,9 @@ public class DisplayDepth : MonoBehaviour {
 			}
 		}
 		return img;
+	}
+	public bool GetSomeoneStanding()
+	{
+		return someoneStanding;
 	}
 }

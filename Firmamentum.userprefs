@@ -1,17 +1,17 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\StaticVars.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CameraMovement.cs">
     <Files>
-      <File FileName="Assets\Scripts\StaticVars.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\Kinect\KinectImgControllers\DisplayColor.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\CameraMovement.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\BloomBreathing.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CameraMovement.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\Kinect\KinectImgControllers\DisplayDepth.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\Kinect\KinectImgControllers\DisplayColor.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\Kinect\KinectWrapper\KinectSensor.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\Kinect\KinectWrapper\DeviceOrEmulator.cs" Line="1" Column="1" />
       <File FileName="Assets\Uniduino\Scripts\Arduino.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Breathing.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\BarrierController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\BarrierBreathing.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CameraSway.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ChangeFoV.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\StaticVars.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\BodyMovement.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

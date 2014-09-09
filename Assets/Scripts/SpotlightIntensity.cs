@@ -35,7 +35,7 @@ public class SpotlightIntensity : MonoBehaviour {
 			if(light.intensity <= 0.5f && Mathf.Abs (newValue) > ((max + min)/2))
 			{
 //				Debug.Log (light.intensity);
-				light.intensity = Mathf.Lerp (light.intensity, 0.5f, Time.deltaTime *0.4f);
+				light.intensity = Mathf.Lerp (light.intensity, 1.0f, Time.deltaTime *0.4f);
 			}
 			else if(light.intensity >=0.0f && Mathf.Abs(newValue) <= ((max + min)/2))
 			{

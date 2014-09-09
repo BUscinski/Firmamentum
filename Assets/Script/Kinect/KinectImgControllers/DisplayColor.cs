@@ -4,6 +4,7 @@ using System.Collections;
 //[RequireComponent(typeof(Renderer))]
 public class DisplayColor : MonoBehaviour {
 	
+	public GameObject KinectPrefab;
 	public DeviceOrEmulator devOrEmu;
 	public GameObject PointCloudParent;
 	private Kinect.KinectInterface kinect;
@@ -47,8 +48,17 @@ public class DisplayColor : MonoBehaviour {
 //		}
 //
 //	}
+	void Awake()
+	{
+		if(GameObject.Find ("KinectPrefab(Clone)") == null)
+		{
+			GameObject.Instantiate (KinectPrefab);
+		}
+	}
+
 
 	void Start () {
+		devOrEmu = GameObject.Find ("KinectPrefab(Clone)").GetComponent<DeviceOrEmulator>();
 		PointCloudSlowDistance = 6.0f;
 		kinect = devOrEmu.getKinect();
 	//	tex = new Texture2D(640,480,TextureFormat.ARGB32,false);
@@ -79,7 +89,7 @@ public class DisplayColor : MonoBehaviour {
 				//Add Particle System?
 			}
 		}
-		PointCloudParent.transform.Rotate (new Vector3(0,0,270));
+		PointCloudParent.transform.Rotate (new Vector3(0,0,90));
 		//middlePoint = thePixels[middlePointx, middlePointy].transform.position;
 	}
 	
@@ -247,8 +257,8 @@ public class DisplayColor : MonoBehaviour {
 	{
 		float newDepthValue = (depthValue * pointCloudMultiplier);
 	//	Debug.Log (newDepthValue);
-		Vector3 newPositionPixel = new Vector3(thePixels[x,y].transform.position.x, thePixels[x,y].transform.position.y, -newDepthValue);
-		Vector3 newPositionOriginal = new Vector3(originalPositions[x,y].transform.position.x, originalPositions[x,y].transform.position.y, -newDepthValue);
+		Vector3 newPositionPixel = new Vector3(thePixels[x,y].transform.position.x, thePixels[x,y].transform.position.y, -newDepthValue - 2);
+		Vector3 newPositionOriginal = new Vector3(originalPositions[x,y].transform.position.x, originalPositions[x,y].transform.position.y, -newDepthValue - 2);
 		originalPositions[x,y].transform.position = newPositionOriginal;
 		thePixels[x,y].transform.position = newPositionPixel;
 	}

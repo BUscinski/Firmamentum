@@ -5,6 +5,7 @@ public class BloomBreathing: MonoBehaviour {
 	public Breathing breathCalc;
 	public FastBloom LeftEye;
 	public FastBloom RightEye;
+	public FastBloom mainCamera;
 	private float min;
 	private float max;
 	private float newValue;
@@ -34,27 +35,35 @@ public class BloomBreathing: MonoBehaviour {
 			}
 			//	Debug.Log (newValue);
 			//Debug.Log (breathCalc.GetMovementValue ());
-			if(LeftEye.intensity <= 2.5f && Mathf.Abs (newValue) <= ((max + min)/2))
+		//	if(LeftEye.intensity <= 2.5f && Mathf.Abs (newValue) <= ((max + min)/2))
+			if(mainCamera.intensity <= 2.5f && Mathf.Abs (newValue) < ((max + min)/2))
 			{
 				LeftEye.blurSize = Mathf.Lerp (LeftEye.blurSize, 5.5f, Time.deltaTime * breathCalc.breathingSpeed);
 				RightEye.blurSize = Mathf.Lerp (RightEye.blurSize, 5.5f, Time.deltaTime * breathCalc.breathingSpeed);
+				mainCamera.blurSize = Mathf.Lerp (mainCamera.blurSize, 5.5f, Time.deltaTime * breathCalc.breathingSpeed);
 
 				LeftEye.intensity = Mathf.Lerp (LeftEye.intensity, 2.5f, Time.deltaTime * breathCalc.breathingSpeed);
 				RightEye.intensity = Mathf.Lerp (RightEye.intensity, 2.5f, Time.deltaTime * breathCalc.breathingSpeed);
-				
+				mainCamera.intensity = Mathf.Lerp (mainCamera.intensity, 2.5f, Time.deltaTime * breathCalc.breathingSpeed);
+
+
 				LeftEye.threshhold = Mathf.Lerp (LeftEye.threshhold, 0.01f, Time.deltaTime * breathCalc.breathingSpeed);
 				RightEye.threshhold = Mathf.Lerp (RightEye.threshhold, 0.01f, Time.deltaTime * breathCalc.breathingSpeed);
+				mainCamera.threshhold = Mathf.Lerp (mainCamera.threshhold, 0.01f, Time.deltaTime * breathCalc.breathingSpeed);
 			}
 			else if(LeftEye.intensity >= 1.0f && Mathf.Abs(newValue) > ((max + min)/2))
 			{
 				LeftEye.intensity = Mathf.Lerp (LeftEye.intensity, 1.0f, Time.deltaTime * breathCalc.breathingSpeed);
-				RightEye.intensity = Mathf.Lerp (LeftEye.intensity, 1.0f, Time.deltaTime * breathCalc.breathingSpeed);
+				RightEye.intensity = Mathf.Lerp (RightEye.intensity, 1.0f, Time.deltaTime * breathCalc.breathingSpeed);
+				mainCamera.intensity = Mathf.Lerp (mainCamera.intensity, 1.0f, Time.deltaTime * breathCalc.breathingSpeed);
 
 				LeftEye.blurSize = Mathf.Lerp (LeftEye.blurSize, 0.0f, Time.deltaTime * breathCalc.breathingSpeed);
 				RightEye.blurSize = Mathf.Lerp (RightEye.blurSize, 0.0f, Time.deltaTime * breathCalc.breathingSpeed);
+				mainCamera.blurSize = Mathf.Lerp (mainCamera.blurSize, 0.0f, Time.deltaTime * breathCalc.breathingSpeed);
 
 				LeftEye.threshhold = Mathf.Lerp (LeftEye.threshhold, 0.25f, Time.deltaTime * breathCalc.breathingSpeed);
 				RightEye.threshhold = Mathf.Lerp (RightEye.threshhold, 0.25f, Time.deltaTime * breathCalc.breathingSpeed);
+				mainCamera.threshhold = Mathf.Lerp (mainCamera.threshhold, 0.25f, Time.deltaTime * breathCalc.breathingSpeed);
 			}
 		}
 	}
